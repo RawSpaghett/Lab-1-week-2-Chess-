@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    [SerializeField] private int gridSize = 8;
+    [SerializeField] public int gridSize = 8;
     private Color light = Color.white;
     private Color dark = Color.black;
 
