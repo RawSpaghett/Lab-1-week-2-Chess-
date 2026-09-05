@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 
 
@@ -9,14 +10,22 @@ public class PieceBase : MonoBehaviour
     [SerializeField] private PieceType pieceType;
     [SerializeField] private Color tint = Color.white;
     
-    [SerializeField] private Sprite[] pieceSprites = new Sprite[6];
     
-    private enum PieceType
+    public enum PieceType
     {
         King,Queen,Rook,Knight,Bishop,Pawn
     }
 
-     void OnDrawGizmos()
+    private Dictionary<PieceType,string> textureDict = new Dictionary<PieceType, string>() //for gizmos.drawicon
+    {
+        {PieceType.King,"King"},
+        {PieceType.Queen,"Queen"},
+        {PieceType.Bishop,"Bishop"},
+        {PieceType.Knight,"Knight"},
+        {PieceType.Rook, "Rook"},
+        {PieceType.Pawn, "Pawn"}
+    };
+    private void OnDrawGizmos()
     {
         SnapToGrid(); 
         //Create base movement gizmo that handles piece moves, and changes with enum
@@ -24,22 +33,8 @@ public class PieceBase : MonoBehaviour
     }
     private void ApplySprite()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
-        if (spriteRenderer == null)
-        {
-            return;
-        } 
-        
-        int index = (int)pieceType;
-        
-        // Array may still be empty while setting up so this runs constantly
-        if (pieceSprites != null && index < pieceSprites.Length && pieceSprites[index] != null)
-        {
-            spriteRenderer.sprite = pieceSprites[index];
-        }
-
-        spriteRenderer.color = tint; 
+        if(textureDict.TryGetValue(pieceType,out string path))
+            Gizmos.DrawIcon(this.transform.position,path,true,tint);
     }
 
 
