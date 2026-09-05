@@ -13,7 +13,7 @@ public class BoardManager : MonoBehaviour
             for(int c = 0; c < gridSize; c++)
             {
                 Gizmos.color = ((r+c)%2 == 0) ? light: dark;
-                Gizmos.DrawCube(new Vector3(r ,c,1),new Vector3(1,1,1));
+                Gizmos.DrawWireCube(new Vector3(r ,c,1),new Vector3(1,1,1));
             }
         }
     }

@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PieceBase
   boardManager: {fileID: 2034445875}
-  pieceType: 0
+  pieceType: 3
   tint: {r: 1, g: 1, b: 1, a: 1}
   pieceSprites:
   - {fileID: -2223498260249388719, guid: 47b24701f9ffb4234b41332c98ac0184, type: 3}
@@ -168,7 +168,7 @@ Transform:
   m_GameObject: {fileID: 573216799}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: -0, z: 1}
+  m_LocalPosition: {x: 4, y: 4, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

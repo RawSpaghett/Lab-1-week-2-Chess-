@@ -18,10 +18,8 @@ public class PieceBase : MonoBehaviour
 
      void OnDrawGizmos()
     {
-        //Snap to halfpoints on grid automatically (0.5,1.5,etc)
-        SnapToGrid();
-        //Change texture based on enum
-        //Create base movement gizmo that handles piece moves, and changes with texture
+        SnapToGrid(); 
+        //Create base movement gizmo that handles piece moves, and changes with enum
         ApplySprite();
     }
     private void ApplySprite()
@@ -43,6 +41,8 @@ public class PieceBase : MonoBehaviour
 
         spriteRenderer.color = tint; 
     }
+
+
 
     private void SnapToGrid()
     {
@@ -81,10 +81,9 @@ public class PieceBase : MonoBehaviour
         return cell.x >= 0 && cell.x < boardManager.gridSize && cell.y >= 0 && cell.y < boardManager.gridSize; 
     }
 
-    private List<Vector2Int> GetMoveCells(Vector2Int origin)
+    private List<Vector2Int> GetMoveCells(Vector2Int origin) //if this wasnt a lab, would fix DRY
     {
         List<Vector2Int> cells = new List<Vector2Int>();
-
         switch (pieceType)
         {
             case PieceType.Rook:
@@ -93,20 +92,65 @@ public class PieceBase : MonoBehaviour
                 AddLine(cells, origin, Vector2Int.left);
                 AddLine(cells, origin, Vector2Int.right);
                 break;
+            case PieceType.Bishop: //diagonals
+                AddLine(cells,origin, Vector2Int.up + Vector2Int.right);
+                AddLine(cells,origin, Vector2Int.up + Vector2Int.left);
+                AddLine(cells,origin, Vector2Int.down + Vector2Int.right);
+                AddLine(cells,origin, Vector2Int.down + Vector2Int.left);
+                break;
+            case PieceType.King: //one way any direction
+                AddLine(cells, origin, Vector2Int.up,1);
+                AddLine(cells, origin, Vector2Int.down,1);
+                AddLine(cells, origin, Vector2Int.left,1);
+                AddLine(cells, origin, Vector2Int.right,1);
+                //corners
+                AddLine(cells, origin, Vector2Int.up + Vector2Int.right,1); //top right
+                AddLine(cells, origin, Vector2Int.up + Vector2Int.left,1); //top left
+                AddLine(cells,origin, Vector2Int.down + Vector2Int.right,1); //bottom right
+                AddLine(cells,origin, Vector2Int.down + Vector2Int.left,1); //bottom left
+                break;
+            case PieceType.Knight: //L
+            //up
+                AddLine(cells, origin, (Vector2Int.up * 2) + Vector2Int.right,1);
+                AddLine(cells, origin, Vector2Int.up  + (Vector2Int.right * 2),1);
+                AddLine(cells, origin, (Vector2Int.up * 2) + Vector2Int.left,1);
+                AddLine(cells, origin, Vector2Int.up  + (Vector2Int.left * 2),1);
+            //down
+                AddLine(cells, origin, (Vector2Int.down * 2) + Vector2Int.right,1);
+                AddLine(cells, origin, Vector2Int.down  + (Vector2Int.right * 2),1);
+                AddLine(cells, origin, (Vector2Int.down * 2) + Vector2Int.left,1);
+                AddLine(cells, origin, Vector2Int.down  + (Vector2Int.left * 2),1);
+                break;
+            case PieceType.Pawn://one way, forward
+                AddLine(cells, origin, Vector2Int.down,1);
+                //AddLine(cells, origin, Vector2Int.up,1);
+                break;
+            case PieceType.Queen:// anywhere
+                //columns
+                AddLine(cells, origin, Vector2Int.up);
+                AddLine(cells, origin, Vector2Int.down);
+                AddLine(cells, origin, Vector2Int.left);
+                AddLine(cells, origin, Vector2Int.right);
+                //diagonals
+                AddLine(cells,origin, Vector2Int.up + Vector2Int.right);
+                AddLine(cells,origin, Vector2Int.up + Vector2Int.left);
+                AddLine(cells,origin, Vector2Int.down + Vector2Int.right);
+                AddLine(cells,origin, Vector2Int.down + Vector2Int.left);
+                break;
         }
-
         return cells;
     }
 
     // Walks one direction until it hits the edge
-    private void AddLine(List<Vector2Int> cells, Vector2Int origin, Vector2Int direction)
+    private void AddLine(List<Vector2Int> cells, Vector2Int origin, Vector2Int direction , int steps = 15)
     {
         Vector2Int current = origin + direction;
         
-        while (IsOnBoard(current))
+        while (steps > 0 && IsOnBoard(current))
         {
-            cells.Add(current);
-            current += direction;
+                cells.Add(current);
+                current += direction;
+                steps--;
         }
     }
 }
