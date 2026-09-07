@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 
 
@@ -67,7 +66,7 @@ public class PieceBase : MonoBehaviour
                 continue;
             }
 
-            Gizmos.DrawCube(new Vector3(cell.x, cell.y, transform.position.z), new Vector3(0.8f, 0.8f, 0.1f));
+            Gizmos.DrawCube(new Vector3(cell.x, cell.y, -1f), new Vector3(0.8f, 0.8f, 0.1f));
         }
     }
 
@@ -117,7 +116,7 @@ public class PieceBase : MonoBehaviour
                 AddLine(cells, origin, Vector2Int.down  + (Vector2Int.left * 2),1);
                 break;
             case PieceType.Pawn://one way, forward
-                AddLine(cells, origin, Vector2Int.down,1);
+                AddLine(cells, origin, Vector2Int.up,1);
                 //AddLine(cells, origin, Vector2Int.up,1);
                 break;
             case PieceType.Queen:// anywhere
